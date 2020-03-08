@@ -1,4 +1,5 @@
 // pages/posts/post-detail/post-detail.js
+var postData = require("../../../data/posts-data.js")
 Page({
 
   /**
@@ -12,7 +13,10 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-
+    var postId = options.id;
+    this.setData({
+      ...postData.postList[postId]
+    })
   },
 
   /**

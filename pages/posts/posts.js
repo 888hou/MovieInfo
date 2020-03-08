@@ -24,7 +24,7 @@ Page({
     // console.log(postId);
     // console.log(postName);
     wx.navigateTo({
-      url: 'post-detail/post-detail?post-id='+postId,
+      url: 'post-detail/post-detail?id=' + postId
     })
   }
 })
