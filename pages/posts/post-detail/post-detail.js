@@ -44,8 +44,33 @@ Page({
     postCollected = !postCollected;
     postsCollected[this.data.currentPostId] = postCollected;
     //修改缓存数据
-    wx.setStorageSync('posts_collected', postsCollected);
+    
     //更新数据刷新界面
+    this.showToast(postsCollected, postCollected);
+  },
+
+  showModal: function (postsCollected, postCollected) {
+    var _this = this;
+    wx.showModal({
+      title: '收藏',
+      content: postCollected ? "是否收藏该文章" : "是否取消收藏",
+      showCancel : true,
+      cancelText: postCollected ? "不收藏" : "返回",
+      cancelColor: "#333",
+      confirmText: postCollected ? "收藏" : "取消收藏",
+      confirmColor: "#405f80",
+      success: function(res) {
+        if(res.confirm){
+          wx.setStorageSync('posts_collected', postsCollected);
+          _this.setData({
+            collected: postCollected
+          });
+        }
+      }
+    });
+  },
+  showToast: function (postsCollected, postCollected) {
+    wx.setStorageSync('posts_collected', postsCollected);
     this.setData({
       collected: postCollected
     });
@@ -55,7 +80,6 @@ Page({
       duration: 1000
     });
   },
-
   onShareTap: function (event) {
     console.log(event)
   },
