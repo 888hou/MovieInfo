@@ -6,7 +6,6 @@ Page({
    * Page initial data
    */
   data: {
-
   },
 
   /**
@@ -14,11 +13,42 @@ Page({
    */
   onLoad: function (options) {
     var postId = options.id;
+    this.data.currentPostId = postId;
     this.setData({
       ...postData.postList[postId]
     })
+    var postsCollected = wx.getStorageSync('posts_collected');
+    if (postsCollected){
+      var postCollected = postsCollected[postId];
+      if (postCollected){
+        this.setData({
+          collected: postCollected
+        })
+      }
+    }else{
+      var postsCollected = {};
+      postsCollected[postId] = false;
+      wx.setStorageSync("posts_collected", postsCollected);
+    }
+    this.setData({
+      collected: postsCollected[postId]
+    });
   },
 
+  onCollectionTap: function (event) { 
+    var postsCollected = wx.getStorageSync('posts_collected');
+    var postCollected = postsCollected[this.data.currentPostId];
+    postCollected = !postCollected;
+    postsCollected[this.data.currentPostId] = postCollected;
+    wx.setStorageSync('posts_collected', postsCollected);
+    this.setData({
+      collected: postCollected
+    });
+  },
+
+  onShareTap: function (event) {
+    console.log(event)
+  },
   /**
    * Lifecycle function--Called when page is initially rendered
    */
