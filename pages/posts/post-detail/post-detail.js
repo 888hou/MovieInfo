@@ -17,6 +17,7 @@ Page({
     this.setData({
       ...postData.postList[postId]
     })
+    //从缓存取数据
     var postsCollected = wx.getStorageSync('posts_collected');
     if (postsCollected){
       var postCollected = postsCollected[postId];
@@ -25,7 +26,7 @@ Page({
           collected: postCollected
         })
       }
-    }else{
+    }else{//如果缓存没有创建缓存
       var postsCollected = {};
       postsCollected[postId] = false;
       wx.setStorageSync("posts_collected", postsCollected);
@@ -35,14 +36,23 @@ Page({
     });
   },
 
-  onCollectionTap: function (event) { 
+  onCollectionTap: function (event) {
+    //从缓存取数据
     var postsCollected = wx.getStorageSync('posts_collected');
     var postCollected = postsCollected[this.data.currentPostId];
+    //取反
     postCollected = !postCollected;
     postsCollected[this.data.currentPostId] = postCollected;
+    //修改缓存数据
     wx.setStorageSync('posts_collected', postsCollected);
+    //更新数据刷新界面
     this.setData({
       collected: postCollected
+    });
+    wx.showToast({
+      title: postCollected ? '收藏成功' : '取消成功',
+      icon: 'success',
+      duration: 1000
     });
   },
 
