@@ -81,6 +81,16 @@ Page({
     });
   },
   onShareTap: function (event) {
+    var itemList = ['分享给微信好友', '分享到朋友圈', '分享到QQ', '分享到朋友圈']
+    wx.showActionSheet({
+      itemList: itemList,
+      itemColor: '#405f80',
+      success:function(res) {
+        if(!res.cancel){
+          console.log(res.tapIndex);
+        }
+      }
+    })
     console.log(event)
   },
   /**
