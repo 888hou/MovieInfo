@@ -35,8 +35,36 @@ Page({
       collected: postsCollected[postId]
     });
   },
-
+  onPlayMusicTap: function () {
+    console.log(this.data.music.url);
+    wx.playBackgroundAudio({
+      dataUrl: this.data.music.url,
+    })
+  },
   onCollectionTap: function (event) {
+    //this.getPostsCollectedSync();
+    this.getPostsCollectedAsync();
+  },
+
+  getPostsCollectedAsync: function () {
+    //从缓存取数据
+    var _this = this;
+    var postsCollected = wx.getStorage({
+      key: 'posts_collected',
+      success: function(res) {
+        var postsCollected = res.data;
+        var postCollected = postsCollected[_this.data.currentPostId];
+        postCollected = !postCollected;
+        // //修改缓存数据
+        postsCollected[_this.data.currentPostId] = postCollected;
+        // //更新数据刷新界面
+        _this.showToast(postsCollected, postCollected);
+      }
+    })
+    
+  },
+
+  getPostsCollectedSync: function(){
     //从缓存取数据
     var postsCollected = wx.getStorageSync('posts_collected');
     var postCollected = postsCollected[this.data.currentPostId];
@@ -44,7 +72,7 @@ Page({
     postCollected = !postCollected;
     postsCollected[this.data.currentPostId] = postCollected;
     //修改缓存数据
-    
+
     //更新数据刷新界面
     this.showToast(postsCollected, postCollected);
   },
