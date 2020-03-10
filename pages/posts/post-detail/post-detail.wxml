@@ -1,6 +1,6 @@
 <view class="container">
   <image class="head-image" src="{{headImgSrc}}"></image>
-  <image class="audio" catch:tap="onPlayMusicTap" src="/images/music/music-start.png"></image>
+  <image class="audio" catch:tap="onMusicTap" src="{{isPlayImgMusic?'/images/music/music-stop.png':'/images/music/music-start.png'}}"></image>
   <view class="author-data ">
     <image class="avatar" src="{{avatar}}"></image>
     <text class="author">{{author}}</text>
