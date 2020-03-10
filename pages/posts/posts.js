@@ -23,7 +23,16 @@ Page({
     // var postName = event.currentTarget.dataset.postName;
     // console.log(postId);
     // console.log(postName);
-    wx.navigateTo({
+    wx.redirectTo({
+      url: 'post-detail/post-detail?id=' + postId
+    })
+  },
+  onSwiperTap: function (event) {
+    var postId = event.target.dataset.postId;
+    // var postName = event.currentTarget.dataset.postName;
+    // console.log(postId);
+    // console.log(postName);
+    wx.redirectTo({
       url: 'post-detail/post-detail?id=' + postId
     })
   }
