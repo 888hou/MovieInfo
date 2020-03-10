@@ -4,4 +4,7 @@
   <view bind:tap="onTap" class="moto-container">
     <text class="moto">开启小程序</text>
   </view>
+  <view bind:tap="onClearStorage" class="moto-container">
+    <text class="moto">清除缓存</text>
+  </view>
 </view>

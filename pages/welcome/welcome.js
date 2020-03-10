@@ -7,5 +7,8 @@ Page({
     wx.redirectTo({
       url: '/pages/posts/posts',
     })
+  },
+  onClearStorage : function () {
+    wx.clearStorage();
   }
 })

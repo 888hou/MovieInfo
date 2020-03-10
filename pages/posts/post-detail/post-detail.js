@@ -1,18 +1,20 @@
 // pages/posts/post-detail/post-detail.js
 var postData = require("../../../data/posts-data.js")
+var app = getApp();
 Page({
 
   /**
    * Page initial data
    */
   data: {
-    isPlayImgMusic: false
+    isPlayingMusic: false
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function(options) {
+    var globalData = app.globalData;
     var postId = options.id;
     this.data.currentPostId = postId;
     this.setData({
@@ -35,13 +37,37 @@ Page({
     this.setData({
       collected: postsCollected[postId]
     });
+    if (app.globalData.g_isPlayingMusic && app.globalData.g_currentMusicPostId == postId){
+      this.setData({
+        isPlayingMusic: true
+      })
+    }
+    this.setMusicMonitor();
+  },
+  setMusicMonitor: function () {
+    var _this = this
+    wx.onBackgroundAudioPlay(function () {
+      _this.setData({
+        isPlayingMusic: true
+      })
+      app.globalData.g_isPlayingMusic = true;
+      app.globalData.g_currentMusicPostId = _this.data.currentPostId;
+    });
+
+    wx.onBackgroundAudioPause(function () {
+      _this.setData({
+        isPlayingMusic: false
+      })
+      app.globalData.g_isPlayingMusic = false;
+      app.globalData.g_currentMusicPostId = null;
+    });
   },
   onMusicTap: function() {
-    if (this.data.isPlayImgMusic) {
+    if (this.data.isPlayingMusic) {
       wx.pauseBackgroundAudio();
       console.log('stop')
       this.setData({
-        isPlayImgMusic: false
+        isPlayingMusic: false
       });
     } else {
       wx.playBackgroundAudio({
@@ -50,7 +76,7 @@ Page({
         coverImgUrl: this.data.music.coverImg
       })
       this.setData({
-        isPlayImgMusic: true
+        isPlayingMusic: true
       });
       console.log('start')
     }
