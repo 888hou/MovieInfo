@@ -12,7 +12,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.request({
+      url: 'http://t.yushu.im/v2/movie/top250',
+      data: {},
+      header: {
+        "Content-Type" : "application/json"
+      },
+      method: 'GET',
+      success: function (res) {
+        console.log(res);
+        if (res.errMsg == "request:ok"){
+          console.log(res.data);
+        }
+      },
+      fail: function (error) {
+        console.log(error);
+      },
+      complete: function () {
 
+      }
+    })
   },
 
   /**
