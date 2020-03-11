@@ -50,6 +50,7 @@ Page({
     })
   },
 
+
   processDoubanData: function(moviesDouban, columnTitle, settedKey) {
     var movies = [];
     for (var subject of moviesDouban.subjects) {
