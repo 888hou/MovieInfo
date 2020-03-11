@@ -4,6 +4,7 @@
 .movie-list-container {
   display: flex;
   flex-direction: column;
+  background-color: #FFF;
 }
 
 .inner-container {
