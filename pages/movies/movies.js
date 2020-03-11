@@ -1,4 +1,5 @@
 // pages/movies/moview.js
+var util = require("../../utils/utils.js")
 var app = getApp();
 Page({
 
@@ -6,9 +7,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    inTheaters : {},
-    comingSoon:{},
-    top250:{}
+    inTheaters: {},
+    comingSoon: {},
+    top250: {}
   },
 
   /**
@@ -18,59 +19,63 @@ Page({
     var inTheatersUrl = app.globalData.doubanBase + "/v2/movie/in_theaters";
     var comingSoonUrl = app.globalData.doubanBase + "/v2/movie/coming_soon";
     var top250Url = app.globalData.doubanBase + "/v2/movie/top250";
-    this.getMovieListData(inTheatersUrl,"正在热映","inTheaters");
-    this.getMovieListData(comingSoonUrl,"即将上映","comingSoon");
-    this.getMovieListData(top250Url,"Top250","top250");
+    this.getMovieListData(inTheatersUrl, "正在热映", "inTheaters");
+    this.getMovieListData(comingSoonUrl, "即将上映", "comingSoon");
+    this.getMovieListData(top250Url, "Top250", "top250");
   },
 
-  getMovieListData: function (url, columnTitle, settedKey) {
+  getMovieListData: function(url, columnTitle, settedKey) {
     var _this = this;
     wx.request({
       url: url,
-      data: {"start":6,"count":3},
+      data: {
+        "start": 6,
+        "count": 3
+      },
       header: {
         "Content-Type": "application/json"
       },
       method: 'GET',
-      success: function (res) {
+      success: function(res) {
         if (res.errMsg == "request:ok") {
           _this.processDoubanData(res.data, columnTitle, settedKey);
         }
       },
-      fail: function (error) {
+      fail: function(error) {
         console.log(error);
       },
-      complete: function () {
+      complete: function() {
 
       }
     })
   },
 
-  processDoubanData: function (moviesDouban,columnTitle,settedKey) {
+  processDoubanData: function(moviesDouban, columnTitle, settedKey) {
     var movies = [];
-    for (var subject of moviesDouban.subjects){
+    for (var subject of moviesDouban.subjects) {
       var title = subject.title;
-      if (title.length >=6) {
-        title = title.substring(0,6)+"..."
+      if (title.length >= 6) {
+        title = title.substring(0, 6) + "..."
       }
       var temp = {
-        title : title,
-        stars: subject.rating.stars,
+        title: title,
+        stars: util.convertToStringArray(subject.rating.stars),
         average: subject.rating.average,
-        coverageUrl:subject.images.large,
+        coverageUrl: subject.images.large,
         movieId: subject.id
       }
       movies.push(temp);
     }
     var readyData = {
       title: columnTitle,
-      movies : movies
+      movies: movies
     }
     var data = {}
     data[settedKey] = readyData;
     this.setData(data);
-    
+
   },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
